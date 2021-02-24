@@ -22,7 +22,7 @@ Let's start with a simple http server which we will migrate to CATKeys.
 
 Save the following file as `serve.js`:
 
-```javascript
+```
 const http = require('http')
 
 const serve = () => {
@@ -43,7 +43,7 @@ serve()
 
 Now let's create a client. Save the following file as `request.js`:
 
-```javascript
+```
 const http = require('http')
 
 const request = () => {
@@ -107,7 +107,7 @@ CATKeys is simply a wrapper for the `https` and `tls` method for creating server
 
 After making these changes, the `serve.js` now looks like this:
 
-```javascript
+```
 cconst { https } = require('catkeys')
 
 const serve = async () => {
@@ -128,7 +128,7 @@ serve()
 
 And `request.js`:
 
-```javascript
+```
 const { https } = require('catkeys')
 
 const request = async () => {
@@ -179,7 +179,7 @@ Now you can connect from clients using `myapp.example.com`. Hosting the server o
 
 If you want tell clients to reject those generic, reserver names that are normally present in server keys I mentioned earlier, and only connect to servers with certificate that match their hostname, you can provide the option `catRejectMismatchedHostname: true`:
 
-```javascript
+```
 const req = await https.request(
   'https://localhost:8080',
   { catRejectMismatchedHostname: true },
@@ -193,7 +193,7 @@ const req = await https.request(
 
 It could be that you want to remove access to a client. CATKeys supports this by providing the options `catCheckKeyExists: true` when calling `createServer()`:
 
-```javascript
+```
 (await https.createServer(
   { catCheckKeyExists: true },
   (req, res) => {
@@ -208,7 +208,7 @@ CATKeys will check the `catkeys` key directory to see if the client key is prese
 
 If you have an app that connects to multiple CATKeys servers then you would need multiple client keys. If there is only 1 client key then CATKeys will always use that to connect. If there is more than 1 then you will need to define which key to use when connecting:
 
-```javascript
+```
 const req1 = await https.request(
     'https://host1.example.com/',
     { catKey: 'client-key-1' }
@@ -272,7 +272,7 @@ Because the TLS connection is terminated at the server, you will not be able to 
 
 Suppose you want to implement access control for different clients, or maybe you just want to log the name of the client that connected to a server. This can be done by accessing `req.connection.getPeerCertificate()` in the request handler on the server:
 
-```javascript
+```
 (await https.createServer(
   (req, res) => {
     const clientCert = req.connection.getPeerCertificate()
